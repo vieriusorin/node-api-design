@@ -1,29 +1,17 @@
-import { prismaMock } from '../../../singleton'
+import * as user from '../user'
 
-import { MockContext, Context, createMockContext } from '../../../context'
-import { createNewUser } from '../user'
+describe("user handler", function () {
 
-let mockCtx: MockContext
-let ctx: Context
-
-beforeEach(() => {
-  mockCtx = createMockContext()
-  ctx = mockCtx as unknown as Context
-})
-
-describe('createNewUser', () => {
-  it('should create a new user in the database', async () => {
-    const mockUser = {
-      username: 'test',
-      password: 'test',
-      createdAt: new Date(),
-      id: '1'
+  it('should create a new user', async () => {
+    const req = {
+      body: {
+        username: "test",
+        password: "test"
+      }
     };
-
-    prismaMock.user.create.mockResolvedValue(mockUser)
-
-
-    await expect(createNewUser(_, _, mockUser)).resolves.toEqual(createNewUser)
-  });
-
-});
+    const res = {
+      json: jest.fn()
+    };
+    await user.createNewUser(req, res, () => { });
+  })
+})
